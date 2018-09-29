@@ -1,0 +1,19 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_showChildLst`( IN rootId VARCHAR(40) )
+BEGIN
+CREATE TEMPORARY TABLE
+IF
+	NOT EXISTS tmpLst ( sno INT PRIMARY KEY auto_increment, id VARCHAR(40), depth INT );
+DELETE 
+FROM
+	tmpLst;
+CALL p_createChildLst ( rootId, 2);
+SELECT
+	s_menu.* 
+FROM
+	tmpLst,
+	s_menu 
+WHERE
+	tmpLst.id = s_menu.id 
+ORDER BY
+	tmpLst.sno;
+END
